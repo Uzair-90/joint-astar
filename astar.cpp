@@ -86,11 +86,11 @@ bool hasEdgeConflict(const vector<Point>& prev_positions, const vector<Point>& n
 
 // Generate successors of the current state
 vector<State> getSuccessors(const State& current, int n) {
-  cout << "Generating successors for state with g=" << current.g << " and positions: ";
+  cout << "Generating successors for state with g = " << current.g << " and positions: ";
   for (const auto& pos : current.positions) {
     cout << "(" << pos.x << "," << pos.y << ") ";
   }
-  cout << endl;
+  cout << "\n";
 
   static const vector<Point> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}, {0, 0}};
   vector<State> successors;
@@ -114,18 +114,17 @@ vector<State> getSuccessors(const State& current, int n) {
       for (const auto& pos : new_positions) {
         cout << "(" << pos.x << "," << pos.y << ") ";
       }
-      cout << endl;
+      cout << "\n";
     }
   }
 
-  cout << "Generated " << successors.size() << " successors." << endl;
+  cout << "Generated " << successors.size() << " successors.\n";
   return successors;
 }
 
 // Implement the Joint State A* algorithm
-vector<vector<Point>> jointStateAStar(const vector<Point>& starts, const vector<Point>& goals,
-                                      int n) {
-  cout << "Starting Joint State A* with grid size " << n << endl;
+vector<vector<Point>> jointStateAStar(const vector<Point>& starts, const vector<Point>& goals, int n) {
+  cout << "Starting Joint State A* with grid size " << n << "\n";
 
   // Define the heuristic function
   auto heuristic = [&goals](const vector<Point>& positions) {
@@ -150,7 +149,7 @@ vector<vector<Point>> jointStateAStar(const vector<Point>& starts, const vector<
   gScore[starts] = 0;
 
   cout << "Initial state with g=" << startState.g << " and h=" << startState.h
-       << " pushed to openSet" << endl;
+       << " pushed to openSet\n";
 
   // Main loop of the A* algorithm
   while (!openSet.empty()) {
@@ -161,11 +160,11 @@ vector<vector<Point>> jointStateAStar(const vector<Point>& starts, const vector<
     for (const auto& pos : current.positions) {
       cout << "(" << pos.x << "," << pos.y << ") ";
     }
-    cout << endl;
+    cout << "\n";
 
     // Check if we have reached the goal
     if (current.positions == goals) {
-      cout << "Goal reached!" << endl;
+      cout << "Goal reached!" << "\n";
       vector<vector<Point>> path;
       vector<Point> state = current.positions;
       while (state != starts) {
@@ -182,32 +181,32 @@ vector<vector<Point>> jointStateAStar(const vector<Point>& starts, const vector<
       int tentative_gScore = gScore[current.positions] + 1;
       if (gScore.find(neighbor.positions) == gScore.end() ||
           tentative_gScore < gScore[neighbor.positions]) {
-        cout << "Updating state with new gScore " << tentative_gScore << endl;
+        cout << "Updating state with new gScore " << tentative_gScore << "\n";
         cameFrom[neighbor.positions] = current.positions;
         gScore[neighbor.positions] = tentative_gScore;
         int h = heuristic(neighbor.positions);
         openSet.push({neighbor.positions, tentative_gScore, h});
         cout << "Pushing new state to openSet with g=" << tentative_gScore << " and h=" << h
-             << endl;
+             << "\n";
       }
     }
   }
 
-  cout << "No path found" << endl;
+  cout << "No path found\n";
   return {};  // Return empty path if no solution found
 }
 
 // Main function to test the Joint State A* algorithm
 int main() {
-  int n = 10;  // Grid size
-  vector<Point> starts = {{1, 1}, {2, 1}, {1, 4}, {5, 6}, {3,3}};
-  vector<Point> goals = {{8, 2}, {9, 4}, {7, 3}, {8,9}, {9,9}};
+  int n = 3;  // Grid size
+  vector<Point> starts = {{1, 1}, {1, 0}, {2, 1}};
+  vector<Point> goals = {{1, 0}, {1, 2}, {0, 1}};
 
   vector<vector<Point>> path = jointStateAStar(starts, goals, n);
 
   // Print the found path or indicate no path found
   if (!path.empty()) {
-    cout << "Path found:" << endl;
+    cout << "Path found:\n";
     for (const auto& state : path) {
       for (const auto& pos : state) {
         cout << "(" << pos.x << "," << pos.y << ") ";
@@ -215,7 +214,7 @@ int main() {
       cout << endl;
     }
   } else {
-    cout << "No path found" << endl;
+    cout << "No path found\n";
   }
 
   return 0;
